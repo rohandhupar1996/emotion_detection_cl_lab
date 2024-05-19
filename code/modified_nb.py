@@ -1,39 +1,31 @@
-from collections import Counter
-import math
+import sys
+import time
 
 class MultiLabelNaiveBayes:
     def __init__(self):
         self.models = {}
 
     def train(self, X, Y):
-        # Train a separate Naive Bayes model for each label
+        print("Training start...")
         for column in Y.columns:
+            self.animate_training(column)
             self.models[column] = self.train_single_label(X, Y[column])
+        print("Training completed!")
 
     def train_single_label(self, X, y):
-        # Frequency of each class
         class_count = Counter(y)
         doc_count = len(y)
-        
-        # Calculate prior probabilities
         prior_probabilities = {cls: math.log(class_count[cls] / doc_count) for cls in class_count}
-        
-        # Feature counting per class
         feature_counts = {}
         for cls in class_count:
             feature_counts[cls] = Counter()
-        
-        # Count features in each class
         for text, label in zip(X, y):
-            feature_counts[label].update(text.split())  # Assuming the simplest case where features are words
-        
-        # Calculate feature probabilities
+            feature_counts[label].update(text.split())
         feature_probabilities = {}
         for cls in class_count:
-            total_features = sum(feature_counts[cls].values()) + len(feature_counts[cls])  # Laplace smoothing
-            feature_probabilities[cls] = {word: math.log((feature_counts[cls].get(word, 0) + 1) / total_features) 
+            total_features = sum(feature_counts[cls].values()) + len(feature_counts[cls])
+            feature_probabilities[cls] = {word: math.log((feature_counts[cls].get(word, 0) + 1) / total_features)
                                           for word in feature_counts[cls]}
-        
         return {'prior': prior_probabilities, 'likelihood': feature_probabilities}
 
     def predict(self, X):
@@ -41,19 +33,25 @@ class MultiLabelNaiveBayes:
         for text in X:
             result = {}
             for emotion, model in self.models.items():
-                log_prob = {cls: model['prior'][cls] for cls in model['prior']}  # Start with the prior probabilities
-                words = text.split()  # Split text into words
+                log_prob = {cls: model['prior'][cls] for cls in model['prior']}
+                words = text.split()
                 for word in words:
                     for cls in model['likelihood']:
-                        log_prob[cls] += model['likelihood'][cls].get(word, 0)  # Add the log probability of each word
-                
-                # Find the class with the highest log probability
+                        log_prob[cls] += model['likelihood'][cls].get(word, 0)
                 predicted_class = max(log_prob, key=log_prob.get)
                 result[emotion] = predicted_class
             results.append(result)
         return results
 
-# # Example usage
+    def animate_training(self, label):
+        animation = "|/-\\"
+        for i in range(10):  # Adjust the range for longer display if needed
+            time.sleep(0.1)  # Speed of animation
+            sys.stdout.write(f"\rTraining {label} " + animation[i % len(animation)])
+            sys.stdout.flush()
+        print()  # Move to new line
+
+# Example usage
 # nb_model = MultiLabelNaiveBayes()
-# nb_model.train(X_train, Y_train)  # X_train and Y_train need to be defined
-# predictions = nb_model.predict(X_test)  # X_test needs to be defined
+# nb_model.train(X_train, Y_train)  # Define X_train and Y_train appropriately
+# predictions = nb_model.predict(X_test)  # Define X_test appropriately
