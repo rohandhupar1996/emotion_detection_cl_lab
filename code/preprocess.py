@@ -11,9 +11,26 @@ class SimpleCountVectorizer:
         self.max_features = max_features
         self.vocabulary_ = {}
 
+    def preprocess_text(self, text):
+        # Convert text to lowercase
+        text = text.lower()
+
+        # Remove URLs, mentions, hashtags, numbers, and punctuation
+        text = re.sub(r'http\S+', '', text)
+        text = re.sub(r'@\w+', '', text)
+        text = re.sub(r'#\w+', '', text)
+        text = re.sub(r'\d+', '', text)
+        text = re.sub(r'[^\w\s]', '', text)
+        
+        # Normalize whitespaces
+        text = re.sub(r'\s+', ' ', text).strip()
+        
+        return text
+
     def fit(self, documents):
         word_counts = {}
         for doc in documents:
+            doc = self.preprocess_text(doc)  # Apply preprocessing to each document
             tokens = doc.split()  # Tokenizing by spaces
             for token in tokens:
                 if token in word_counts:
@@ -29,10 +46,10 @@ class SimpleCountVectorizer:
         self.vocabulary_ = {word: index for index, (word, _) in enumerate(sorted_words)}
 
     def transform(self, documents):
-        # Initialize matrix: Number of documents x Number of words in vocabulary
         X = np.zeros((len(documents), len(self.vocabulary_)))
 
         for idx, doc in enumerate(documents):
+            doc = self.preprocess_text(doc)  # Apply preprocessing to each document
             tokens = doc.split()
             for token in tokens:
                 if token in self.vocabulary_:
