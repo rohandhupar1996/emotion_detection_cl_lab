@@ -16,7 +16,7 @@ class CustomTfidfVectorizer:
         # Constructing the TF-IDF matrix
         tf_idf_matrix = []
         for tf in tf_scores:
-            doc_tf_idf = [tf[word] * self.idf_scores.get(word, 0) for word in self.feature_names]
+            doc_tf_idf = [tf.get(word, 0) * self.idf_scores.get(word, 0) for word in self.feature_names]
             tf_idf_matrix.append(doc_tf_idf)
 
         return np.array(tf_idf_matrix)
@@ -29,11 +29,7 @@ class CustomTfidfVectorizer:
     def compute_idf(self, corpus):
         doc_count = len(corpus)
         word_doc_count = Counter(word for document in corpus for word in set(document.lower().split()))
-
-        # Calculating IDF scores
         self.idf_scores = {word: math.log(doc_count / (1 + freq)) for word, freq in word_doc_count.items()}
-
-        # Selecting the top max_features based on IDF scores
         sorted_words = sorted(self.idf_scores.items(), key=lambda item: item[1], reverse=True)
         self.feature_names = [word for word, idf in sorted_words[:self.max_features]]
 

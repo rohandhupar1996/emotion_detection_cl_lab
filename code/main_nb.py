@@ -27,7 +27,7 @@ def main():
     X_train = combined_data.iloc[:, :-8] 
     y_train = combined_data.iloc[:, -8:]
         
-    
+    print("train")
     nb_model=MultiLabelNaiveBayes()
     nb_model.train(X_train, y_train)
     
@@ -46,14 +46,28 @@ def main():
         pred = nb_model.predict(item)
         y_pred.append(pred)
         
-    ev=EmotionEvaluation()
+    # List of emotions you are evaluating
     emotions = ['Anger', 'Anticipation', 'Disgust', 'Fear', 'Joy', 'Sadness', 'Surprise', 'Trust']
-    evaluation = EmotionEvaluation(y_true, y_pred, emotions)  # y_true and y_pred need to be lists of dictionaries
+
+    # Create an instance of EmotionEvaluation with the appropriate data
+    evaluation = EmotionEvaluation(y_true, y_pred, emotions)
+
+    # Compute metrics
     evaluation.compute_metrics()
+
+    # Calculate precision, recall, and F1 score for each emotion
     final_scores = evaluation.calculate_precision_recall_f1()
+
+    # Calculate average F1 scores
     average_f1_scores = evaluation.calculate_average_f1()
-    print(final_scores)
-    print("Average F1 Scores:", average_f1_scores)
+
+    # Print the results
+    print("Final Scores by Emotion:")
+    for emotion, scores in final_scores.items():
+        print(f"{emotion} - Precision: {scores['Precision']:.2f}, Recall: {scores['Recall']:.2f}, F1 Score: {scores['F1 Score']:.2f}")
+
+    print("\nAverage F1 Scores:", average_f1_scores)
+
         
 
 if __name__ == '__main__':
