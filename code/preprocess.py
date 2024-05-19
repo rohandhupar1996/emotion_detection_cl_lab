@@ -1,5 +1,6 @@
 # Define the class for processing text data
 import pandas as pd
+from feature_extractor import TextProcessor
 class TextDataProcessor:
     def __init__(self, file_path):
         self.file_path = file_path
@@ -29,6 +30,7 @@ class TextDataProcessor:
             self.df[column] = self.df[column].notna().astype(int)
             
     def get_data(self):
-        tfidf_df = self.apply_tfidf()
+        tf_idf=TextProcessor()
+        tfidf_df = self.tf_idf.apply_tfidf()
         # Concatenate the TF-IDF features with the binary emotion labels
         return pd.concat([tfidf_df, self.df[self.emotion_columns].reset_index(drop=True)], axis=1)

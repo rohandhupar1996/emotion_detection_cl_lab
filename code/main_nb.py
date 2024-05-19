@@ -11,12 +11,9 @@ dev = '../data/val/val.csv'
 
 
 # main.py
-
-import sys
-from preprocess import your_preprocessing_function
-from feature_extractor import your_feature_extraction_function
-from modified_nb import your_modified_nb_function
-from evaluation import your_evaluation_function
+from preprocess import TextDataProcessor
+from modified_nb import MultiLabelNaiveBayes
+from evaluation import EmotionEvaluation
 
 def main():
     # Train
