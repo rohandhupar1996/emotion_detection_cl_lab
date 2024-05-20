@@ -46,18 +46,3 @@ cd code
 python main_nb.py
 ```
 
-## Configuration
-
-Ensure that the data paths in the scripts are set correctly to point to the respective directories under `data/`.
-
-## Contributions
-
-Feel free to fork the project, create a new branch, and submit pull requests.
-
-## License
-
-Specify the license under which the project is released.
-
-## Contact
-
-For more information, contact [your-email@domain.com].
