@@ -18,9 +18,9 @@ import pandas as pd
 import numpy as np
 
 # File paths for train, test, and validation datasets
-train = '../data/isear/isear-train.csv'
-test = '../data/isear/isear-test.csv'
-val = '../data/isear/isear-val.csv'
+train = 'data\isear\isear-train.csv'
+test = 'data\isear\isear-test.csv'
+val = 'data\isear\isear-val.csv'
 
 def main():
     '''
