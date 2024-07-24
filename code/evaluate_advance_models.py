@@ -17,10 +17,25 @@ distilbert_tokenizer = DistilBertTokenizer.from_pretrained('distilbert-base-unca
 MAX_LEN = 64  # or whatever maximum length you want to use
 
 def ensure_dir(directory):
+    """
+    Ensures that the specified directory exists. If it does not exist, creates it.
+
+    Parameters:
+    directory (str): The directory path to ensure existence.
+    """
     if not os.path.exists(directory):
         os.makedirs(directory)
 
 def plot_confusion_matrix(y_true, y_pred, labels, model_name):
+    """
+    Plots the confusion matrix for the given true and predicted labels and saves the plot as an image file.
+
+    Parameters:
+    y_true (array-like): True labels.
+    y_pred (array-like): Predicted labels.
+    labels (list): List of label names.
+    model_name (str): Name of the model for labeling the plot.
+    """
     cm = confusion_matrix(y_true, y_pred)
     plt.figure(figsize=(10, 8))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
@@ -36,6 +51,13 @@ def plot_confusion_matrix(y_true, y_pred, labels, model_name):
     plt.close()
 
 def plot_training_history(history, model_name):
+    """
+    Plots the training history (accuracy and loss) and saves the plot as an image file.
+
+    Parameters:
+    history (History): Keras History object containing training history.
+    model_name (str): Name of the model for labeling the plot.
+    """
     plt.figure(figsize=(12, 4))
     plt.subplot(1, 2, 1)
     plt.plot(history.history['accuracy'], label='Training Accuracy')
@@ -59,20 +81,39 @@ def plot_training_history(history, model_name):
     plt.savefig(f'outputs/training_history_{model_name}.png')
     plt.close()
 
-
 def clean_and_prepare_df(df):
+    """
+    Cleans and prepares the dataframe by removing labels with only one occurrence and applying text cleaning.
+
+    Parameters:
+    df (DataFrame): The input dataframe containing 'Emotion Label' and 'Text' columns.
+
+    Returns:
+    DataFrame: The cleaned and prepared dataframe.
+    """
     label_counts = df['Emotion Label'].value_counts()
     labels_to_remove = label_counts[label_counts == 1].index
     df = df[~df['Emotion Label'].isin(labels_to_remove)]
-    df=df[["Emotion Label","Text"]]
-    df=df.dropna()
+    df = df[["Emotion Label", "Text"]]
+    df = df.dropna()
 
     df['Text'] = df['Text'].apply(clean_text)
     print(df.shape)
     return df
 
-
 def evaluate_model(model, X_test, y_test, model_name):
+    """
+    Evaluates the model on the test data and generates a confusion matrix, classification report, and accuracy/f1 scores.
+
+    Parameters:
+    model (Model): The trained model to evaluate.
+    X_test (array-like): The test input data.
+    y_test (array-like): The true labels for the test data.
+    model_name (str): The name of the model for labeling outputs.
+
+    Returns:
+    np.array: The predicted class labels.
+    """
     if model_name in ['DistilBERT', 'BERT-CNN']:
         y_pred = model.predict([X_test['input_ids'], X_test['attention_mask']])
     else:
@@ -100,15 +141,47 @@ def evaluate_model(model, X_test, y_test, model_name):
     return y_pred_classes
 
 def save_predictions(y_pred, dataset_name, model_name):
+    """
+    Saves the predicted class labels to a text file.
+
+    Parameters:
+    y_pred (array-like): The predicted class labels.
+    dataset_name (str): The name of the dataset (e.g., 'test').
+    model_name (str): The name of the model for labeling the output file.
+    """
     ensure_dir('outputs')
     np.savetxt(f'outputs/predictions_{dataset_name}_{model_name}.txt', y_pred, fmt='%d')
 
-
 def encode_texts(texts, tokenizer, max_len):
+    """
+    Encodes the input texts using the specified tokenizer and maximum length.
+
+    Parameters:
+    texts (list of str): The input texts to encode.
+    tokenizer (Tokenizer): The tokenizer to use for encoding.
+    max_len (int): The maximum length of the encoded sequences.
+
+    Returns:
+    dict: A dictionary containing encoded input IDs and attention masks.
+    """
     return tokenizer(texts, max_length=max_len, padding=True, truncation=True, return_tensors="tf")
 
-    
 def train_and_evaluate_model(model_name, X_train, y_train, X_val, y_val, X_test, y_test, df_train, df_val, df_test):
+    """
+    Trains and evaluates the specified model on the provided data.
+
+    Parameters:
+    model_name (str): The name of the model to train and evaluate ('BiLSTM', 'DistilBERT', 'BERT-CNN').
+    X_train (array-like): The training input data.
+    y_train (array-like): The training labels.
+    X_val (array-like): The validation input data.
+    y_val (array-like): The validation labels.
+    X_test (array-like): The test input data.
+    y_test (array-like): The test labels.
+    df_train (DataFrame): The original training dataframe.
+    df_val (DataFrame): The original validation dataframe.
+    df_test (DataFrame): The original test dataframe.
+    """
     if model_name == 'BiLSTM':
         model, history = train_bilstm(X_train, y_train, X_val, y_val)
         X_test_eval = X_test

@@ -7,6 +7,19 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.utils import to_categorical
 
 def clean_text(text):
+    """
+    Cleans a given text string by performing the following steps:
+    1. Converts the text to lowercase.
+    2. Removes all digits.
+    3. Removes all punctuation.
+    4. Replaces multiple spaces with a single space and strips leading/trailing spaces.
+
+    Parameters:
+    text (str): The input text string to be cleaned.
+
+    Returns:
+    str: The cleaned text string.
+    """
     text = text.lower()
     text = re.sub(r'\d+', '', text)
     text = re.sub(r'[^\w\s]', '', text)
@@ -14,6 +27,28 @@ def clean_text(text):
     return text
 
 def load_and_preprocess_data(train_path, val_path, test_path, max_len=100, num_words=10000):
+    """
+    Loads and preprocesses the training, validation, and test datasets.
+    Steps include loading data from CSV files, cleaning text, encoding labels, tokenizing, and padding sequences.
+
+    Parameters:
+    train_path (str): The file path to the training dataset CSV file.
+    val_path (str): The file path to the validation dataset CSV file.
+    test_path (str): The file path to the test dataset CSV file.
+    max_len (int, optional): The maximum length of the padded sequences. Default is 100.
+    num_words (int, optional): The maximum number of words to keep in the tokenizer's vocabulary. Default is 10000.
+
+    Returns:
+    tuple: A tuple containing:
+        - X_train_padded (np.array): The padded tokenized sequences for the training set.
+        - y_train_categorical (np.array): The one-hot encoded labels for the training set.
+        - X_val_padded (np.array): The padded tokenized sequences for the validation set.
+        - y_val_categorical (np.array): The one-hot encoded labels for the validation set.
+        - X_test_padded (np.array): The padded tokenized sequences for the test set.
+        - y_test_categorical (np.array): The one-hot encoded labels for the test set.
+        - tokenizer (Tokenizer): The fitted Keras tokenizer.
+    """
+    # Load datasets
     df_train = pd.read_csv(train_path)
     df_val = pd.read_csv(val_path)
     df_test = pd.read_csv(test_path)
