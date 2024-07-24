@@ -1,48 +1,69 @@
 
+
 # Emotion Detection Computational Linguistics Lab
 
 This project implements an emotion detection model using various computational techniques. It includes preprocessing of data, feature extraction, model training, and evaluation.
 
-## Project Structure
+# Let's create the README.md file with the provided content.
 
-- **`code/`**: Contains all the Python scripts necessary for running the project.
-  - `main_nb.py`: Main script that runs the model training and testing.
-  - `preprocess.py`: Handles data preprocessing.
-  - `evaluation.py`: For evaluating the model's performance.
-  - `modified_nb.py`: Modified logic of the main notebook.
-  - `dummy_evaluation.py`: A dummy evaluator for basic testing.
-  - `post_process.py`: Post-processing of the model outputs.
-- **`data/`**: Contains all datasets used in the project.
-  - `ssec/`: Contains the training, validation, and test datasets in CSV format.
-  - `isear/`: Includes datasets in both CSV and XLSX formats for training, validation, testing, and predictions.
-- **`.git/`**: Git directory containing version control configurations and history.
+## Table of Contents
 
-## Prerequisites
+1. [Files Description](#files-description)
+2. [How to Run](#how-to-run)
+3. [Dependencies](#dependencies)
 
-- Python 3.x
-- Pip (Python package installer)
+## Files Description
 
-## Installation
+### Main Files
 
-First, clone the repository to your local machine:
+- **main_nb.py**: This script runs the Naive Bayes algorithm. It handles the loading of data, preprocessing, training, and evaluation of the Naive Bayes model.
+- **main_advance_models.py**: This script runs the advanced models (BiLSTM, DistilBERT, BERT-CNN). It includes functions for loading data, preprocessing, training, and evaluation of these models.
 
-```bash
-git clone <repository-url>
-cd emotion_detection_cl_lab
-```
+### Model Files
 
-Install the required Python packages:
+- **distilbert.py**: Contains the implementation and configuration of the DistilBERT model for text classification.
+- **bilstm.py**: Contains the implementation and configuration of the BiLSTM model for text classification.
+- **bert_cnn.py**: Contains the implementation and configuration of the BERT-CNN model for text classification.
 
+### Preprocessing Files
+
+- **advance_preprocessing.py**: Includes advanced preprocessing techniques used for preparing data before feeding it into the advanced models.
+- **preprocess.py**: Handles basic preprocessing tasks required for data preparation such as tokenization, stopword removal, and stemming.
+
+### Training and Evaluation Files
+
+- **train_advance_models.py**: Script dedicated to training the advanced models (BiLSTM, DistilBERT, BERT-CNN).
+- **evaluation.py**: Contains evaluation metrics and methods for assessing the performance of the models.
+- **dummy_evaluation.py**: A simplified version of the evaluation script used for initial testing and validation.
+
+### Others
+
+- **modified_nb.py**: Contains a modified version of the Naive Bayes algorithm with custom adjustments for this project.
+- **requirements.txt**: Lists all the dependencies required to run the scripts in this repository.
+
+## How to Run
+
+1. **Setup Environment**:
+   - Ensure you have Python installed on your system.
+   - Install the required dependencies using the following command:
+     ```bash
+     pip install -r requirements.txt
+     ```
+
+2. **Run Naive Bayes**:
+   - Execute the Naive Bayes script by running:
+     ```bash
+     python main_nb.py
+     ```
+
+3. **Run Advanced Models**:
+   - To train and evaluate advanced models (BiLSTM, DistilBERT, BERT-CNN), run:
+     ```bash
+     python main_advance_models.py
+     ```
+
+## Dependencies
+
+All necessary dependencies are listed in the `requirements.txt` file. Install them using:
 ```bash
 pip install -r requirements.txt
-```
-
-## Running the Project
-
-Navigate to the code directory and run the main script:
-
-```bash
-cd code
-python main_nb.py
-```
-
