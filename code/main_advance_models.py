@@ -103,7 +103,7 @@ def clean_and_prepare_df(df):
 
 def evaluate_model(model, X_test, y_test, model_name):
     """
-    Evaluates the model on the test data and generates a confusion matrix, classification report, and accuracy/f1 scores.
+    Evaluates the model on the test data and generates a confusion matrix, classification report, and various metrics.
 
     Parameters:
     model (Model): The trained model to evaluate.
@@ -112,7 +112,7 @@ def evaluate_model(model, X_test, y_test, model_name):
     model_name (str): The name of the model for labeling outputs.
 
     Returns:
-    tuple: The predicted class labels, accuracy, and F1 score.
+    tuple: The predicted class labels, accuracy, F1 weighted, F1 micro, and F1 macro scores.
     """
     if model_name in ['DistilBERT', 'BERT-CNN']:
         y_pred = model.predict([X_test['input_ids'], X_test['attention_mask']])
@@ -123,7 +123,9 @@ def evaluate_model(model, X_test, y_test, model_name):
     y_true = np.argmax(y_test, axis=1)
 
     accuracy = accuracy_score(y_true, y_pred_classes)
-    f1 = f1_score(y_true, y_pred_classes, average='weighted')
+    f1_weighted = f1_score(y_true, y_pred_classes, average='weighted')
+    f1_micro = f1_score(y_true, y_pred_classes, average='micro')
+    f1_macro = f1_score(y_true, y_pred_classes, average='macro')
     
     report = classification_report(y_true, y_pred_classes)
 
@@ -134,11 +136,13 @@ def evaluate_model(model, X_test, y_test, model_name):
     with open(f'outputs/evaluation_{model_name}.txt', 'w') as f:
         f.write(f"Evaluation results for {model_name}:\n")
         f.write(f"Accuracy: {accuracy}\n")
-        f.write(f"F1 Score: {f1}\n")
+        f.write(f"F1 Score (Weighted): {f1_weighted}\n")
+        f.write(f"F1 Score (Micro): {f1_micro}\n")
+        f.write(f"F1 Score (Macro): {f1_macro}\n")
         f.write("\nClassification Report:\n")
         f.write(report)
 
-    return y_pred_classes, accuracy, f1
+    return y_pred_classes, accuracy, f1_weighted, f1_micro, f1_macro
 
 def save_predictions(y_pred, dataset_name, model_name):
     """
@@ -183,7 +187,7 @@ def train_and_evaluate_model(model_name, X_train, y_train, X_val, y_val, X_test,
     df_test (DataFrame): The original test dataframe.
 
     Returns:
-    tuple: The accuracy and F1 score of the model on the test set.
+    tuple: The accuracy, F1 weighted, F1 micro, and F1 macro scores of the model on the test set.
     """
     if model_name == 'BiLSTM':
         model, history = train_bilstm(X_train, y_train, X_val, y_val)
@@ -220,15 +224,17 @@ def train_and_evaluate_model(model_name, X_train, y_train, X_val, y_val, X_test,
 
     plot_training_history(history, model_name)
     
-    y_pred, accuracy, f1 = evaluate_model(model, X_test_eval, y_test, model_name)
+    y_pred, accuracy, f1_weighted, f1_micro, f1_macro = evaluate_model(model, X_test_eval, y_test, model_name)
     save_predictions(y_pred, 'test', model_name)
 
     print(f"{model_name} - Final Results:")
     print(f"Accuracy: {accuracy:.4f}")
-    print(f"F1-Score: {f1:.4f}")
+    print(f"F1-Score (Weighted): {f1_weighted:.4f}")
+    print(f"F1-Score (Micro): {f1_micro:.4f}")
+    print(f"F1-Score (Macro): {f1_macro:.4f}")
     print("-----------------------------")
 
-    return accuracy, f1
+    return accuracy, f1_weighted, f1_micro, f1_macro
 
 if __name__ == "__main__":
     base_dir = Path(__file__).resolve().parents[1]
@@ -249,15 +255,20 @@ if __name__ == "__main__":
 
     for model_name in models:
         print(f"Training and evaluating {model_name}...")
-        accuracy, f1 = train_and_evaluate_model(model_name, X_train, y_train, X_val, y_val, X_test, y_test, df_train, df_val, df_test)
-        results[model_name] = {'Accuracy': accuracy, 'F1-Score': f1}
+        accuracy, f1_weighted, f1_micro, f1_macro = train_and_evaluate_model(model_name, X_train, y_train, X_val, y_val, X_test, y_test, df_train, df_val, df_test)
+        results[model_name] = {
+            'Accuracy': accuracy,
+            'F1-Score (Weighted)': f1_weighted,
+            'F1-Score (Micro)': f1_micro,
+            'F1-Score (Macro)': f1_macro
+        }
         print(f"Completed {model_name}\n")
 
     print("\nSummary of all models:")
     for model_name, metrics in results.items():
         print(f"{model_name}:")
-        print(f"  Accuracy: {metrics['Accuracy']:.4f}")
-        print(f"  F1-Score: {metrics['F1-Score']:.4f}")
+        for metric_name, metric_value in metrics.items():
+            print(f"  {metric_name}: {metric_value:.4f}")
         print("-----------------------------")
 
     print("All models trained and evaluated. Results saved in the 'outputs' directory.")
