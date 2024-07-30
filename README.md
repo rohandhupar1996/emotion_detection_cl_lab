@@ -171,13 +171,19 @@ If you encounter any issues or have questions, please refer to the project docum
 2. **Run Naive Bayes**:
    - Execute the Naive Bayes script by running:
      ```bash
-     python main_nb.py
+     python ./code/main.py
+
+   # or for windows
+   python .\code\main.py
      ```
 
 3. **Run Advanced Models**:
    - To train and evaluate advanced models (BiLSTM, DistilBERT, BERT-CNN), run:
      ```bash
-     python main_advance_models.py
+     python ./code/main_advance_models.py
+
+   # or for windows
+   python .\code\main_advance_models.py
      ```
 
 ## Dependencies
