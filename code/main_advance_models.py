@@ -112,7 +112,7 @@ def evaluate_model(model, X_test, y_test, model_name):
     model_name (str): The name of the model for labeling outputs.
 
     Returns:
-    np.array: The predicted class labels.
+    tuple: The predicted class labels, accuracy, and F1 score.
     """
     if model_name in ['DistilBERT', 'BERT-CNN']:
         y_pred = model.predict([X_test['input_ids'], X_test['attention_mask']])
@@ -138,7 +138,7 @@ def evaluate_model(model, X_test, y_test, model_name):
         f.write("\nClassification Report:\n")
         f.write(report)
 
-    return y_pred_classes
+    return y_pred_classes, accuracy, f1
 
 def save_predictions(y_pred, dataset_name, model_name):
     """
@@ -181,6 +181,9 @@ def train_and_evaluate_model(model_name, X_train, y_train, X_val, y_val, X_test,
     df_train (DataFrame): The original training dataframe.
     df_val (DataFrame): The original validation dataframe.
     df_test (DataFrame): The original test dataframe.
+
+    Returns:
+    tuple: The accuracy and F1 score of the model on the test set.
     """
     if model_name == 'BiLSTM':
         model, history = train_bilstm(X_train, y_train, X_val, y_val)
@@ -217,8 +220,15 @@ def train_and_evaluate_model(model_name, X_train, y_train, X_val, y_val, X_test,
 
     plot_training_history(history, model_name)
     
-    y_pred = evaluate_model(model, X_test_eval, y_test, model_name)
+    y_pred, accuracy, f1 = evaluate_model(model, X_test_eval, y_test, model_name)
     save_predictions(y_pred, 'test', model_name)
+
+    print(f"{model_name} - Final Results:")
+    print(f"Accuracy: {accuracy:.4f}")
+    print(f"F1-Score: {f1:.4f}")
+    print("-----------------------------")
+
+    return accuracy, f1
 
 if __name__ == "__main__":
     base_dir = Path(__file__).resolve().parents[1]
@@ -234,11 +244,20 @@ if __name__ == "__main__":
     df_val = pd.read_csv(val_path)
     df_test = pd.read_csv(test_path)
 
-    models = ['BiLSTM','DistilBERT', 'BERT-CNN']
+    models = ['BiLSTM', 'DistilBERT', 'BERT-CNN']
+    results = {}
 
     for model_name in models:
         print(f"Training and evaluating {model_name}...")
-        train_and_evaluate_model(model_name, X_train, y_train, X_val, y_val, X_test, y_test, df_train, df_val, df_test)
+        accuracy, f1 = train_and_evaluate_model(model_name, X_train, y_train, X_val, y_val, X_test, y_test, df_train, df_val, df_test)
+        results[model_name] = {'Accuracy': accuracy, 'F1-Score': f1}
         print(f"Completed {model_name}\n")
+
+    print("\nSummary of all models:")
+    for model_name, metrics in results.items():
+        print(f"{model_name}:")
+        print(f"  Accuracy: {metrics['Accuracy']:.4f}")
+        print(f"  F1-Score: {metrics['F1-Score']:.4f}")
+        print("-----------------------------")
 
     print("All models trained and evaluated. Results saved in the 'outputs' directory.")
