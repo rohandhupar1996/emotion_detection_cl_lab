@@ -74,7 +74,7 @@ This project implements an emotion detection model using various computational t
 ![BERT-CNN Confusion Matrix](outputs/confusion_matrix_BERT-CNN.png)
 
 
-# Final Model Comparison (Sorted by Macro F1-Score)
+# Final Model Comparison
 
 | Model       | Macro F1-Score | Micro F1-Score   |
 |:------------|:---------------|-----------------:|
