@@ -74,6 +74,15 @@ This project implements an emotion detection model using various computational t
 ![BERT-CNN Confusion Matrix](outputs/confusion_matrix_BERT-CNN.png)
 
 
+# Final Model Comparison (Sorted by Macro F1-Score)
+
+| Model       | Macro F1-Score | Micro F1-Score   |
+|:------------|:---------------|-----------------:|
+| BiLSTM      | 0.327          |           0.327  |
+| Naive Bayes | 0.5325         |           0.5322 |
+| DistilBERT  | 0.6609         |           0.6609 |
+| BERT-CNN    | 0.6772         |           0.6772 |
+
 
 
 
