@@ -4,8 +4,6 @@
 
 This project implements an emotion detection model using various computational techniques. It includes preprocessing of data, feature extraction, model training, and evaluation.
 
-# Let's create the README.md file with the provided content.
-
 ## Table of Contents
 
 1. [Files Description](#files-description)
@@ -38,7 +36,7 @@ This project implements an emotion detection model using various computational t
 
 ### Others
 
-- **modified_nb.py**: Contains a modified version of the Naive Bayes algorithm with custom adjustments for this project.
+- **modified_nb.py**: Contains a scratch numpy version of the Naive Bayes algorithm with custom adjustments for this project.
 - **requirements.txt**: Lists all the dependencies required to run the scripts in this repository.
 
 ## How to Run
