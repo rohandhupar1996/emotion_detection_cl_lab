@@ -13,6 +13,61 @@ This project implements an emotion detection model using various computational t
 ## Files Description
 
 
+# Model Evaluation Reports
+
+## BERT-CNN
+
+### Classification Report
+| Class        |   Precision |   Recall |   F1-Score |   Support |
+|:-------------|------------:|---------:|-----------:|----------:|
+| 0            |        0.63 |     0.47 |       0.53 |       176 |
+| 1            |        0.8  |     0.54 |       0.65 |       173 |
+| 2            |        0.7  |     0.77 |       0.73 |       164 |
+| 3            |        0.56 |     0.55 |       0.56 |       155 |
+| 4            |        0.86 |     0.84 |       0.85 |       162 |
+| 5            |        0.74 |     0.67 |       0.7  |       151 |
+| 6            |        0.45 |     0.73 |       0.56 |       164 |
+| macro avg    |        0.68 |     0.65 |       0.65 |      1145 |
+| weighted avg |        0.68 |     0.65 |       0.65 |      1145 |
+### Confusion Matrix
+![BERT-CNN Confusion Matrix](outputs/confusion_matrix_BERT-CNN.png)
+
+## BiLSTM
+
+### Classification Report
+| Class        |   Precision |   Recall |   F1-Score |   Support |
+|:-------------|------------:|---------:|-----------:|----------:|
+| 0            |        0.3  |     0.45 |       0.36 |       162 |
+| 1            |        0.29 |     0.26 |       0.27 |       155 |
+| 2            |        0.34 |     0.33 |       0.33 |       151 |
+| 3            |        0.36 |     0.29 |       0.32 |       173 |
+| 4            |        0.3  |     0.1  |       0.15 |       164 |
+| 5            |        0.35 |     0.41 |       0.38 |       176 |
+| 6            |        0.34 |     0.45 |       0.39 |       164 |
+| macro avg    |        0.33 |     0.33 |       0.32 |      1145 |
+| weighted avg |        0.33 |     0.33 |       0.32 |      1145 |
+### Confusion Matrix
+![BiLSTM Confusion Matrix](outputs/confusion_matrix_BiLSTM.png)
+
+## DistilBERT
+
+### Classification Report
+| Class        |   Precision |   Recall |   F1-Score |   Support |
+|:-------------|------------:|---------:|-----------:|----------:|
+| 0            |        0.56 |     0.64 |       0.6  |       176 |
+| 1            |        0.7  |     0.63 |       0.66 |       173 |
+| 2            |        0.79 |     0.78 |       0.78 |       164 |
+| 3            |        0.53 |     0.72 |       0.61 |       155 |
+| 4            |        0.85 |     0.75 |       0.8  |       162 |
+| 5            |        0.7  |     0.71 |       0.71 |       151 |
+| 6            |        0.61 |     0.44 |       0.51 |       164 |
+| macro avg    |        0.68 |     0.67 |       0.67 |      1145 |
+| weighted avg |        0.68 |     0.67 |       0.67 |      1145 |
+### Confusion Matrix
+![DistilBERT Confusion Matrix](outputs/confusion_matrix_DistilBERT.png)
+
+
+
 
 # Project Setup Instructions
 
