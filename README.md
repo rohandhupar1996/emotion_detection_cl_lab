@@ -36,7 +36,7 @@ This project implements an emotion detection model using various computational t
 
 ### Others
 
-- **modified_nb.py**: Contains a modified version of the Naive Bayes algorithm with custom adjustments for this project.
+- **modified_nb.py**: Contains a scratch numpy version of the Naive Bayes algorithm with custom adjustments for this project.
 - **requirements.txt**: Lists all the dependencies required to run the scripts in this repository.
 
 ## How to Run
