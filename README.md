@@ -19,10 +19,10 @@ This project implements an emotion detection model using various computational t
 
 python -m venv venv
 source venv/bin/activate
-pip install -r ./config/requirements.txt
+pip install -r ./requirements.txt
 # or for windows
 source .\venv\Scripts\activate
-pip install -r .\config\requirements.txt
+pip install -r .\requirements.txt
 
 ### Main Files
 
