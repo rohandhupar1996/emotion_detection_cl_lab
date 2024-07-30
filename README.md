@@ -13,16 +13,52 @@ This project implements an emotion detection model using various computational t
 ## Files Description
 
 
-## Setting up env
 
-## Virtualenv
+# Project Setup Instructions
 
-- python -m venv venv
-- source venv/bin/activate
-- pip install -r ./requirements.txt
-- ### or for windows
-  - source .\venv\Scripts\activate
-  - pip install -r .\requirements.txt
+## Setting Up the Virtual Environment
+
+To ensure that the project dependencies are properly managed, follow these steps to set up a virtual environment.
+
+### For Unix/MacOS
+
+1. **Create a virtual environment:**
+   ```sh
+   python -m venv venv
+   ```
+
+2. **Activate the virtual environment:**
+   ```sh
+   source venv/bin/activate
+   ```
+
+3. **Install the required dependencies:**
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+### For Windows
+
+1. **Create a virtual environment:**
+   ```sh
+   python -m venv venv
+   ```
+
+2. **Activate the virtual environment:**
+   ```sh
+   .\venv\Scripts\activate
+   ```
+
+3. **Install the required dependencies:**
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+---
+
+By following these instructions, you'll set up the virtual environment correctly, ensuring that all dependencies specified in `requirements.txt` are installed.
+
+If you encounter any issues or have questions, please refer to the project documentation or contact the project maintainer.
 
 ### Main Files
 
