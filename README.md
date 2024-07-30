@@ -12,6 +12,18 @@ This project implements an emotion detection model using various computational t
 
 ## Files Description
 
+
+## Setting up env
+
+## Virtualenv
+
+python -m venv venv
+source venv/bin/activate
+pip install -r ./config/requirements.txt
+# or for windows
+source .\venv\Scripts\activate
+pip install -r .\config\requirements.txt
+
 ### Main Files
 
 - **main_nb.py**: This script runs the Naive Bayes algorithm. It handles the loading of data, preprocessing, training, and evaluation of the Naive Bayes model.
