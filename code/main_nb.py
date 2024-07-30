@@ -16,11 +16,16 @@ from evaluation import EmotionEvaluation
 from dummy_evaluation import random_prediction, majority_vote_prediction
 import pandas as pd
 import numpy as np
+from pathlib import Path
+
 
 # File paths for train, test, and validation datasets
-train = 'data\isear\isear-train.csv'
-test = 'data\isear\isear-test.csv'
-val = 'data\isear\isear-val.csv'
+
+
+base_dir = Path(__file__).resolve().parents[1]
+train = base_dir / 'data' / 'isear' / 'isear-train.csv'
+val = base_dir / 'data' / 'isear' / 'isear-val.csv'
+test = base_dir / 'data' / 'isear' / 'isear-test.csv'
 
 def main():
     '''
